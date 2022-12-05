@@ -1,34 +1,31 @@
-# Welcome to Remix!
+# DevFinder
 
-- [Remix Docs](https://remix.run/docs)
+DevFinder is a web app powered by Remix[#2] and the GitHub GraphQL API, that allows you to see all the public info and top repositories of a GitHub account.
 
-## Deployment
+## Built With
 
-After having run the `create-remix` command and selected "Vercel" as a deployment target, you only need to [import your Git repository](https://vercel.com/new) into Vercel, and it will be deployed.
-
-If you'd like to avoid using a Git repository, you can also deploy the directory by running [Vercel CLI](https://vercel.com/cli):
-
-```sh
-npm i -g vercel
-vercel
-```
-
-It is generally recommended to use a Git repository, because future commits will then automatically be deployed by Vercel, through its [Git Integration](https://vercel.com/docs/concepts/git).
+- [Remix](https://remix.run/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [GitHub GraphQL API](https://docs.github.com/en/graphql)
 
 ## Development
 
-To run your Remix app locally, make sure your project's local dependencies are installed:
+1. Install NPM packages:
 
-```sh
-npm install
-```
+   ```console
+   npm i
+   ```
 
-Afterwards, start the Remix development server like so:
+2. Fill in **required environmental variables**, see `.env.example` for an example.
 
-```sh
-npm run dev
-```
+3. Start the Remix development server:
+
+   ```console
+   npm run dev
+   ```
 
 Open up [http://localhost:3000](http://localhost:3000) and you should be ready to go!
 
-If you're used to using the `vercel dev` command provided by [Vercel CLI](https://vercel.com/cli) instead, you can also use that, but it's not needed.
+## Contact
+
+Marek Zelinka - mzelinka17@gmail.com
