@@ -32,7 +32,7 @@ function StackedLayout(props) {
   const { children } = props;
 
   return (
-    <main className="mx-auto max-w-3xl space-y-8 px-4 pt-8 pb-12 sm:px-4 lg:px-8">
+    <main className="mx-auto max-w-3xl space-y-8 px-4 py-10 sm:px-4 lg:px-8">
       {children}
     </main>
   );
@@ -115,13 +115,13 @@ export default function IndexRoute() {
           </a>
         ))}
       </dl>
-      <div className="space-y-5">
+      <div>
         <div className="border-b pb-5">
           <h2 className="text-lg font-medium leading-6 text-gray-900">
             Profile
           </h2>
         </div>
-        <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <dl className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {Object.keys(fields).map((field) => (
             <div
               key={field}
@@ -141,103 +141,101 @@ export default function IndexRoute() {
           ))}
         </dl>
       </div>
-      <div className="space-y-5">
+      <div>
         <div className="border-b pb-5">
           <h2 className="text-lg font-medium leading-6 text-gray-900">
             Top Repositories
           </h2>
         </div>
-        {!account.repositories.nodes.length ? (
-          <div className="flow-root">
-            <ul role="list" className="-my-4 divide-y">
-              {account.repositories.nodes.map((item) => (
-                <li
-                  key={item.name}
-                  className="group relative space-y-2 py-4 px-1 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="block truncate text-sm font-medium text-indigo-600 focus:outline-none group-hover:text-indigo-900"
-                    >
-                      {/* Extend touch target to entire panel */}
-                      <span className="absolute inset-0" aria-hidden />
-                      <p>{item.name}</p>
-                    </a>
-                    {item.primaryLanguage && (
-                      <span className="inline-flex items-center gap-1.5 rounded-full border bg-white px-2.5 py-0.5 text-xs font-medium text-gray-500">
-                        <svg
-                          className="-ml-0.5 h-2 w-2"
-                          style={{ color: item.primaryLanguage.color }}
-                          fill="currentColor"
-                          viewBox="0 0 8 8"
+        {account.repositories.nodes.length ? (
+          <ul role="list" className="divide-y">
+            {account.repositories.nodes.map((item) => (
+              <li
+                key={item.name}
+                className="group relative space-y-2 py-4 px-1 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block truncate text-sm font-medium text-indigo-600 focus:outline-none group-hover:text-indigo-900"
+                  >
+                    {/* Extend touch target to entire panel */}
+                    <span className="absolute inset-0" aria-hidden />
+                    <p>{item.name}</p>
+                  </a>
+                  {item.primaryLanguage && (
+                    <span className="inline-flex items-center gap-1.5 rounded-full border bg-white px-2.5 py-0.5 text-xs font-medium text-gray-500">
+                      <svg
+                        className="-ml-0.5 h-2 w-2"
+                        style={{ color: item.primaryLanguage.color }}
+                        fill="currentColor"
+                        viewBox="0 0 8 8"
+                      >
+                        <circle cx={4} cy={4} r={3} />
+                      </svg>
+                      {item.primaryLanguage.name}
+                    </span>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  {item.repositoryTopics.nodes.length !== 0 && (
+                    <div className="flex flex-wrap gap-0.5">
+                      {item.repositoryTopics.nodes.map((topicItem) => (
+                        <span
+                          key={topicItem.topic.name}
+                          className="inline-flex items-center rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium text-indigo-800"
                         >
-                          <circle cx={4} cy={4} r={3} />
-                        </svg>
-                        {item.primaryLanguage.name}
-                      </span>
-                    )}
-                  </div>
-                  <div className="space-y-2">
-                    {item.repositoryTopics.nodes.length !== 0 && (
-                      <div className="flex flex-wrap gap-0.5">
-                        {item.repositoryTopics.nodes.map((topicItem) => (
-                          <span
-                            key={topicItem.topic.name}
-                            className="inline-flex items-center rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium text-indigo-800"
-                          >
-                            {topicItem.topic.name}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                    {item.description && (
-                      <p className="text-sm text-gray-900">
-                        {item.description}
+                          {topicItem.topic.name}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  {item.description && (
+                    <p className="text-sm text-gray-900">{item.description}</p>
+                  )}
+                  <div className="space-y-2 sm:flex sm:gap-6 sm:space-y-0">
+                    <div className="flex items-center gap-1.5">
+                      <StarIcon className="h-5 w-5 flex-shrink-0 text-gray-400" />
+                      <p className="text-sm leading-6 text-gray-500">
+                        {formatDecimalNumber(item.stargazerCount)}{" "}
+                        {item.stargazerCount === 1 ? "star" : "stars"}
                       </p>
-                    )}
-                    <div className="space-y-2 sm:flex sm:gap-6 sm:space-y-0">
-                      <div className="flex items-center gap-1.5">
-                        <StarIcon className="h-5 w-5 flex-shrink-0 text-gray-400" />
-                        <p className="text-sm leading-6 text-gray-500">
-                          {formatDecimalNumber(item.stargazerCount)}{" "}
-                          {item.stargazerCount === 1 ? "star" : "stars"}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <ScaleIcon className="h-5 w-5 flex-shrink-0 text-gray-400" />
-                        <p className="text-sm leading-6 text-gray-500">
-                          {item.licenseInfo?.name ?? "Not available"}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <ShareIcon className="h-5 w-5 flex-shrink-0 text-gray-400" />
-                        <p className="text-sm leading-6 text-gray-500">
-                          {item.forkCount}{" "}
-                          {item.forkCount === 1 ? "fork" : "forks"}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <CalendarIcon className="h-5 w-5 flex-shrink-0 text-gray-400" />
-                        <p className="text-sm leading-6 text-gray-500">
-                          Updated on{" "}
-                          <time dateTime={item.updatedAt}>
-                            {formatDateString(item.updatedAt)}
-                          </time>
-                        </p>
-                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <ScaleIcon className="h-5 w-5 flex-shrink-0 text-gray-400" />
+                      <p className="text-sm leading-6 text-gray-500">
+                        {item.licenseInfo?.name ?? "Not available"}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <ShareIcon className="h-5 w-5 flex-shrink-0 text-gray-400" />
+                      <p className="text-sm leading-6 text-gray-500">
+                        {item.forkCount}{" "}
+                        {item.forkCount === 1 ? "fork" : "forks"}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <CalendarIcon className="h-5 w-5 flex-shrink-0 text-gray-400" />
+                      <p className="text-sm leading-6 text-gray-500">
+                        Updated on{" "}
+                        <time dateTime={item.updatedAt}>
+                          {formatDateString(item.updatedAt)}
+                        </time>
+                      </p>
                     </div>
                   </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+                </div>
+              </li>
+            ))}
+          </ul>
         ) : (
-          <p className="text-center text-sm text-gray-500">
-            <i>No repositories</i>
-          </p>
+          <div className="py-4">
+            <p className="text-center text-sm text-gray-500">
+              <i>No repositories</i>
+            </p>
+          </div>
         )}
       </div>
     </StackedLayout>
