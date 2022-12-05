@@ -49,17 +49,14 @@ export default function IndexRoute() {
   const stats = [
     {
       name: "Repositories",
-      href: `${account.url}?tab=repositories`,
       stat: account.allRepositories.totalCount,
     },
     {
       name: "Followers",
-      href: `${account.url}?tab=followers`,
       stat: account.followers.totalCount,
     },
     {
       name: "Following",
-      href: `${account.url}?tab=following`,
       stat: account.following.totalCount,
     },
   ];
@@ -101,18 +98,15 @@ export default function IndexRoute() {
       </div>
       <dl className="grid grid-cols-1 gap-5 sm:grid-cols-3">
         {stats.map((item) => (
-          <a
+          <div
             key={item.name}
-            href={item.href}
-            target="_blank"
-            rel="noreferrer"
-            className="block space-y-1 rounded-lg border px-4 py-5 hover:shadow sm:px-6"
+            className="space-y-1 rounded-lg border px-4 py-5 sm:px-6"
           >
             <dt className="text-sm font-medium text-gray-500">{item.name}</dt>
             <dd className="text-3xl font-medium text-indigo-600">
               {formatDecimalNumber(item.stat)}
             </dd>
-          </a>
+          </div>
         ))}
       </dl>
       <div>
