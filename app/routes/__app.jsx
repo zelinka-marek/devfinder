@@ -1,9 +1,6 @@
-import {
-  ArrowPathRoundedSquareIcon,
-  FunnelIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/20/solid";
+import { ArrowPathIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Form, Outlet, useSearchParams, useTransition } from "@remix-run/react";
+import { useEffect, useRef } from "react";
 
 function Logo(props) {
   const { className } = props;
@@ -29,34 +26,54 @@ function SearchForm() {
     transition.location &&
     new URLSearchParams(transition.location.search).has("q");
 
+  const searchInputRef = useRef(null);
+
+  useEffect(() => {
+    function onKeyDown(event) {
+      let element = event.currentTarget;
+      let tagName = element.tagName;
+      let isEditingContent =
+        element.isContentEditable ||
+        tagName === "INPUT" ||
+        tagName === "SELECT" ||
+        tagName === "TEXTAREA";
+
+      if (
+        (event.key === "k" && (event.metaKey || event.ctrlKey)) ||
+        (event.key === "/" && !isEditingContent)
+      ) {
+        event.preventDefault();
+        searchInputRef.current.select();
+        searchInputRef.current.scrollIntoView(false);
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", onkeydown);
+    };
+  }, []);
+
   return (
     <Form role="search" className="w-full max-w-lg md:max-w-xs">
-      <div className="flex rounded-md shadow-sm">
-        <div className="relative flex flex-grow items-stretch focus-within:z-10">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            {searching ? (
-              <ArrowPathRoundedSquareIcon className="h-5 w-5 animate-spin text-gray-400" />
-            ) : (
-              <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
-            )}
-          </div>
-          <input
-            type="search"
-            name="q"
-            className="block w-full rounded-none rounded-l-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            placeholder="Search"
-            aria-label="Search by username"
-            defaultValue={username}
-          />
+      <div className="relative rounded-md shadow-sm">
+        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          {searching ? (
+            <ArrowPathIcon className="h-5 w-5 animate-spin" />
+          ) : (
+            <MagnifyingGlassIcon className="h-5 w-5" />
+          )}
         </div>
-        <button
-          type="submit"
-          aria-label="Search"
-          disabled={searching}
-          className="relative -ml-px inline-flex items-center rounded-r-md border border-gray-300 bg-gray-50 px-3.5 py-2 text-gray-400 hover:bg-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          <FunnelIcon className="h-5 w-5" />
-        </button>
+        <input
+          ref={searchInputRef}
+          type="search"
+          name="q"
+          className="block w-full rounded-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          placeholder="Search"
+          aria-label="Search by username"
+          defaultValue={username}
+        />
       </div>
     </Form>
   );
