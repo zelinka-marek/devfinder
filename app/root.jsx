@@ -11,7 +11,7 @@ import tailwindStylesheetUrl from "./styles/tailwind.css";
 export const meta = () => {
   return {
     charset: "utf-8",
-    title: "New Remix App",
+    title: "DevFinder",
     viewport: "width=device-width,initial-scale=1",
   };
 };

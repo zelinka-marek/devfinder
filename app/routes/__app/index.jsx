@@ -28,6 +28,18 @@ export async function loader({ request }) {
   return json(account);
 }
 
+export function meta({ data }) {
+  if (!data) {
+    return {
+      title: "Not Found",
+    };
+  }
+
+  return {
+    title: data.name ?? data.login,
+  };
+}
+
 function StackedLayout(props) {
   const { children } = props;
 
