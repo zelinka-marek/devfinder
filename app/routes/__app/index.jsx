@@ -82,8 +82,8 @@ export default function IndexRoute() {
             src={account.avatarUrl}
             alt=""
           />
-          <div className="sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:gap-6 sm:pb-1">
-            <div className="mt-6 min-w-0 flex-1 sm:hidden md:block">{name}</div>
+          <div className="sm:flex sm:flex-1 sm:items-center sm:justify-end sm:gap-6 sm:pb-1">
+            <div className="mt-6 flex-1 sm:hidden">{name}</div>
             <div className="justify-stretch mt-6 flex flex-col gap-y-3 sm:flex-row sm:gap-x-4">
               <a
                 href={account.url}
@@ -97,7 +97,7 @@ export default function IndexRoute() {
             </div>
           </div>
         </div>
-        <div className="hidden min-w-0 flex-1 sm:block md:hidden">{name}</div>
+        <div className="hidden flex-1 sm:block">{name}</div>
       </div>
       <dl className="grid grid-cols-1 gap-5 sm:grid-cols-3">
         {stats.map((item) => (
