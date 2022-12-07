@@ -72,15 +72,6 @@ export default function IndexRoute() {
       stat: account.following.totalCount,
     },
   ];
-  const fields = {
-    Email: account.email,
-    Location: account.location,
-    Company: account.company,
-    Blog: account.websiteUrl,
-    Twitter: `https://twitter.com/${account.twitterUsername}`,
-    Joined: `Joined ${formatDateString(account.createdAt)}`,
-    Bio: account.bio,
-  };
 
   return (
     <StackedLayout>
@@ -128,23 +119,69 @@ export default function IndexRoute() {
           </h2>
         </div>
         <dl className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {Object.keys(fields).map((field) => (
-            <div
-              key={field}
-              className={
-                field === "Bio" ? "max-w-prose sm:col-span-2" : undefined
-              }
-            >
-              <dt className="text-sm font-medium text-gray-500">{field}</dt>
-              <dd className="mt-1 text-sm text-gray-900">
-                {fields[field]?.length ? (
-                  fields[field]
-                ) : (
-                  <span className="text-gray-500">Not available</span>
-                )}
-              </dd>
-            </div>
-          ))}
+          <div>
+            <dt className="text-sm font-medium text-gray-500">Email</dt>
+            <dd className="mt-1 text-sm text-gray-900">
+              {account.email?.length ? (
+                account.email
+              ) : (
+                <span className="text-gray-500">Not available</span>
+              )}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-sm font-medium text-gray-500">Location</dt>
+            <dd className="mt-1 text-sm text-gray-900">
+              {account.location ?? (
+                <span className="text-gray-500">Not available</span>
+              )}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-sm font-medium text-gray-500">Company</dt>
+            <dd className="mt-1 text-sm text-gray-900">
+              {account.company ?? (
+                <span className="text-gray-500">Not available</span>
+              )}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-sm font-medium text-gray-500">Blog</dt>
+            <dd className="mt-1 text-sm text-gray-900">
+              {account.blog ?? (
+                <span className="text-gray-500">Not available</span>
+              )}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-sm font-medium text-gray-500">Twitter</dt>
+            <dd className="mt-1 text-sm text-gray-900">
+              {account.twitterUsername ? (
+                `twitter.com/${account.twitterUsername}`
+              ) : (
+                <span className="text-gray-500">Not available</span>
+              )}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-sm font-medium text-gray-500">Joined</dt>
+            <dd className="mt-1 text-sm text-gray-900">
+              Joined{" "}
+              <time dateTime={account.createdAt}>
+                {formatDateString(account.createdAt)}
+              </time>
+            </dd>
+          </div>
+          <div className="sm:col-span-2">
+            <dt className="text-sm font-medium text-gray-500">Bio</dt>
+            <dd className="mt-1 max-w-prose text-sm text-gray-900">
+              {account.bio?.length ? (
+                account.bio
+              ) : (
+                <span className="text-gray-500">Not available</span>
+              )}
+            </dd>
+          </div>
         </dl>
       </div>
       <div>
