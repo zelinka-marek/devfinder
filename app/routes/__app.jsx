@@ -1,6 +1,5 @@
 import { ArrowPathIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Form, Outlet, useSearchParams, useTransition } from "@remix-run/react";
-import { useEffect, useRef } from "react";
 
 function Logo(props) {
   const { className } = props;
@@ -26,35 +25,6 @@ function SearchForm() {
     transition.location &&
     new URLSearchParams(transition.location.search).has("q");
 
-  const searchInputRef = useRef(null);
-
-  useEffect(() => {
-    function onKeyDown(event) {
-      let element = event.currentTarget;
-      let tagName = element.tagName;
-      let isEditingContent =
-        element.isContentEditable ||
-        tagName === "INPUT" ||
-        tagName === "SELECT" ||
-        tagName === "TEXTAREA";
-
-      if (
-        (event.key === "k" && (event.metaKey || event.ctrlKey)) ||
-        (event.key === "/" && !isEditingContent)
-      ) {
-        event.preventDefault();
-        searchInputRef.current.select();
-        searchInputRef.current.scrollIntoView(false);
-      }
-    }
-
-    window.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", onkeydown);
-    };
-  }, []);
-
   return (
     <Form role="search" className="w-full max-w-lg md:max-w-xs">
       <div className="relative rounded-md shadow-sm">
@@ -66,10 +36,9 @@ function SearchForm() {
           )}
         </div>
         <input
-          ref={searchInputRef}
           type="search"
           name="q"
-          className="block w-full rounded-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          className="block w-full rounded-md border-gray-300 pl-10 focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
           placeholder="Search"
           aria-label="Search by username"
           defaultValue={username}
@@ -86,7 +55,7 @@ export default function AppRoute() {
         <div className="mx-auto max-w-3xl px-2 sm:px-4 lg:px-8">
           <div className="flex h-16 justify-between">
             <div className="flex shrink-0 items-center px-2 md:px-0">
-              <Logo className="h-8 w-auto text-indigo-600" />
+              <Logo className="h-8 w-auto text-primary-600" />
             </div>
             <div className="flex flex-1 items-center justify-end px-2 md:ml-6">
               <SearchForm />

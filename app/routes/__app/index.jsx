@@ -25,18 +25,18 @@ export async function loader({ request }) {
     throw json(null, { status: 404 });
   }
 
-  return json(account);
+  return json({ account });
 }
 
 export function meta({ data }) {
-  if (!data) {
+  if (!data?.account) {
     return {
       title: "Not Found",
     };
   }
 
   return {
-    title: data.name ?? data.login,
+    title: data.account.name ?? data.account.login,
   };
 }
 
@@ -51,7 +51,7 @@ function StackedLayout(props) {
 }
 
 export default function IndexRoute() {
-  const account = useLoaderData();
+  const { account } = useLoaderData();
 
   const name = (
     <h1 className="truncate text-2xl font-bold text-gray-900">
@@ -89,7 +89,7 @@ export default function IndexRoute() {
                 href={account.url}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="inline-flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
               >
                 View Profile
                 <ArrowTopRightOnSquareIcon className="-mr-1 h-5 w-5 text-gray-400" />
@@ -103,17 +103,17 @@ export default function IndexRoute() {
         {stats.map((item) => (
           <div
             key={item.name}
-            className="space-y-1 rounded-lg border px-4 py-5 sm:px-6"
+            className="space-y-1 rounded-lg border border-gray-300 px-4 py-5 sm:px-6"
           >
-            <dt className="text-sm font-medium text-gray-500">{item.name}</dt>
-            <dd className="text-3xl font-medium text-indigo-600">
+            <dt className="text-gray-900">{item.name}</dt>
+            <dd className="text-3xl font-semibold text-primary-600">
               {formatDecimalNumber(item.stat)}
             </dd>
           </div>
         ))}
       </dl>
       <div>
-        <div className="border-b pb-5">
+        <div className="border-b pb-2">
           <h2 className="text-lg font-medium leading-6 text-gray-900">
             Profile
           </h2>
@@ -185,7 +185,7 @@ export default function IndexRoute() {
         </dl>
       </div>
       <div>
-        <div className="border-b pb-5">
+        <div className="border-b pb-2">
           <h2 className="text-lg font-medium leading-6 text-gray-900">
             Top Repositories
           </h2>
@@ -193,20 +193,15 @@ export default function IndexRoute() {
         {account.repositories.nodes.length ? (
           <ul role="list" className="divide-y">
             {account.repositories.nodes.map((item) => (
-              <li
-                key={item.name}
-                className="group relative space-y-2 py-4 px-1 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500"
-              >
+              <li key={item.name} className="space-y-2 py-4">
                 <div className="flex items-center justify-between gap-2">
                   <a
                     href={item.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="block truncate text-sm font-medium text-indigo-600 focus:outline-none group-hover:text-indigo-900"
+                    className="block text-primary-600 hover:text-primary-900"
                   >
-                    {/* Extend touch target to entire panel */}
-                    <span className="absolute inset-0" aria-hidden />
-                    <p>{item.name}</p>
+                    <p className="turncate text-sm font-medium">{item.name}</p>
                   </a>
                   {item.primaryLanguage && (
                     <span className="inline-flex items-center gap-1.5 rounded-full border bg-white px-2.5 py-0.5 text-xs font-medium text-gray-500">
@@ -228,7 +223,7 @@ export default function IndexRoute() {
                       {item.repositoryTopics.nodes.map((topicItem) => (
                         <span
                           key={topicItem.topic.name}
-                          className="inline-flex items-center rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium text-indigo-800"
+                          className="inline-flex items-center rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800"
                         >
                           {topicItem.topic.name}
                         </span>

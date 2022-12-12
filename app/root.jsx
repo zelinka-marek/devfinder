@@ -17,7 +17,16 @@ export function meta() {
 }
 
 export function links() {
-  return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
+  return [
+    { rel: "stylesheet", href: tailwindStylesheetUrl },
+    {
+      rel: "preload",
+      href: "/Inter-roman.var.woff2?v=3.19",
+      as: "font",
+      type: "font/woff2",
+      crossOrigin: "",
+    },
+  ];
 }
 
 export default function App() {
