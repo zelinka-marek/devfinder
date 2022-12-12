@@ -24,7 +24,7 @@ export function links() {
       href: "/Inter-roman.var.woff2?v=3.19",
       as: "font",
       type: "font/woff2",
-      crossOrigin: "",
+      crossOrigin: "anonymous",
     },
   ];
 }
