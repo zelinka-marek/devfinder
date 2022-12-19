@@ -50,6 +50,16 @@ function StackedLayout(props) {
   );
 }
 
+function ExternalLink(props) {
+  const { href, className, children } = props;
+
+  return (
+    <a href={href} target="_blank" rel="noreferrer" className={className}>
+      {children}
+    </a>
+  );
+}
+
 export default function IndexRoute() {
   const { account } = useLoaderData();
 
@@ -85,28 +95,23 @@ export default function IndexRoute() {
           <div className="sm:flex sm:flex-1 sm:items-center sm:justify-end sm:gap-6 sm:pb-1">
             <div className="mt-6 flex-1 sm:hidden">{name}</div>
             <div className="justify-stretch mt-6 flex flex-col gap-y-3 sm:flex-row sm:gap-x-4">
-              <a
+              <ExternalLink
                 href={account.url}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                className="inline-flex items-center justify-center gap-2 rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
               >
                 View Profile
                 <ArrowTopRightOnSquareIcon className="-mr-1 h-5 w-5 text-gray-400" />
-              </a>
+              </ExternalLink>
             </div>
           </div>
         </div>
         <div className="hidden flex-1 sm:block">{name}</div>
       </div>
-      <dl className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+      <dl className="grid grid-cols-1 gap-5 divide-y divide-gray-300 rounded-lg border border-gray-300 sm:grid-cols-3 md:divide-y-0 md:divide-x">
         {stats.map((item) => (
-          <div
-            key={item.name}
-            className="space-y-1 rounded-lg border border-gray-300 px-4 py-5 sm:px-6"
-          >
+          <div key={item.name} className="space-y-1 px-4 py-5 sm:p-6">
             <dt className="text-gray-900">{item.name}</dt>
-            <dd className="text-3xl font-semibold text-primary-600">
+            <dd className="text-2xl font-semibold text-primary-600">
               {formatDecimalNumber(item.stat)}
             </dd>
           </div>
@@ -195,14 +200,12 @@ export default function IndexRoute() {
             {account.repositories.nodes.map((item) => (
               <li key={item.name} className="space-y-2 py-4">
                 <div className="flex items-center justify-between gap-2">
-                  <a
+                  <ExternalLink
                     href={item.url}
-                    target="_blank"
-                    rel="noreferrer"
                     className="block text-primary-600 hover:text-primary-900"
                   >
                     <p className="turncate text-sm font-medium">{item.name}</p>
-                  </a>
+                  </ExternalLink>
                   {item.primaryLanguage && (
                     <span className="inline-flex items-center gap-1.5 rounded-full border bg-white px-2.5 py-0.5 text-xs font-medium text-gray-500">
                       <svg
