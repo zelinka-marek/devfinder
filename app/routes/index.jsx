@@ -8,12 +8,12 @@ import {
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import { json, redirect } from "@remix-run/node";
 import { useCatch, useLoaderData, useSearchParams } from "@remix-run/react";
+import { StackedLayout } from "~/components/layout";
 import { getUserAccount } from "~/lib/github";
 import { formatDateString, formatDecimalNumber } from "~/utils/format";
 
 export async function loader({ request }) {
   const searchParams = new URL(request.url).searchParams;
-
   const login = searchParams.get("q");
   if (!login) {
     const newSearchParams = new URLSearchParams([["q", "kentcdodds"]]);
@@ -22,32 +22,14 @@ export async function loader({ request }) {
 
   const account = await getUserAccount(login.trim());
   if (!account) {
-    throw json(null, { status: 404 });
+    throw new Response("Not Found", { status: 404 });
   }
 
-  return json({ account });
+  return json(account);
 }
 
 export function meta({ data }) {
-  if (!data?.account) {
-    return {
-      title: "Not Found",
-    };
-  }
-
-  return {
-    title: data.account.name ?? data.account.login,
-  };
-}
-
-function StackedLayout(props) {
-  const { children } = props;
-
-  return (
-    <main className="mx-auto max-w-3xl space-y-8 px-4 py-10 sm:px-4 lg:px-8">
-      {children}
-    </main>
-  );
+  return { title: data?.name || data?.login || "Not Found" };
 }
 
 function ExternalLink(props) {
@@ -61,7 +43,7 @@ function ExternalLink(props) {
 }
 
 export default function IndexRoute() {
-  const { account } = useLoaderData();
+  const account = useLoaderData();
 
   const name = (
     <h1 className="truncate text-2xl font-bold text-gray-900">
@@ -285,6 +267,7 @@ export default function IndexRoute() {
 
 export function CatchBoundary() {
   const caught = useCatch();
+
   const [searchParams] = useSearchParams();
   const login = searchParams.get("q");
 
