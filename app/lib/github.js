@@ -12,6 +12,9 @@ const GET_USER_QUERY = `
       login
       avatarUrl(size: 128)
       name
+      status {
+        message
+      }
       url
       allRepositories: repositories {
         totalCount
