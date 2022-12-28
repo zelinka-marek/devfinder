@@ -53,7 +53,7 @@ export default function IndexRoute() {
 
   return (
     <StackedLayout>
-      <div className="overflow-hidden rounded-lg bg-white shadow">
+      <div className="overflow-hidden rounded-md border bg-white">
         <div className="bg-white px-4 py-5 sm:p-6">
           <div className="sm:flex sm:items-center sm:justify-between">
             <div className="sm:flex sm:items-center sm:gap-4">
@@ -74,7 +74,7 @@ export default function IndexRoute() {
             <div className="mt-5 flex justify-center sm:mt-0">
               <ExternalLink
                 href={account.url}
-                className="flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                className="flex items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
               >
                 View profile
               </ExternalLink>
@@ -95,9 +95,9 @@ export default function IndexRoute() {
           ))}
         </div>
       </div>
-      <div className="overflow-hidden rounded-lg bg-white shadow">
+      <div className="overflow-hidden rounded-md border bg-white">
         <div className="border-b bg-white px-4 py-3 sm:px-6">
-          <h2 className="text-sm font-semibold text-gray-900">Profile</h2>
+          <h2 className="text-sm font-semibold text-gray-800">Profile</h2>
         </div>
         <div className="p-4 sm:px-6">
           <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -107,7 +107,7 @@ export default function IndexRoute() {
                 {account.email?.length ? (
                   account.email
                 ) : (
-                  <span className="text-gray-500">Not available</span>
+                  <span className="text-gray-400">Not available</span>
                 )}
               </dd>
             </div>
@@ -115,7 +115,7 @@ export default function IndexRoute() {
               <dt className="text-sm font-medium text-gray-500">Location</dt>
               <dd className="mt-1 text-sm text-gray-900">
                 {account.location ?? (
-                  <span className="text-gray-500">Not available</span>
+                  <span className="text-gray-400">Not available</span>
                 )}
               </dd>
             </div>
@@ -123,7 +123,7 @@ export default function IndexRoute() {
               <dt className="text-sm font-medium text-gray-500">Company</dt>
               <dd className="mt-1 text-sm text-gray-900">
                 {account.company ?? (
-                  <span className="text-gray-500">Not available</span>
+                  <span className="text-gray-400">Not available</span>
                 )}
               </dd>
             </div>
@@ -131,7 +131,7 @@ export default function IndexRoute() {
               <dt className="text-sm font-medium text-gray-500">Blog</dt>
               <dd className="mt-1 text-sm text-gray-900">
                 {account.blog ?? (
-                  <span className="text-gray-500">Not available</span>
+                  <span className="text-gray-400">Not available</span>
                 )}
               </dd>
             </div>
@@ -141,7 +141,7 @@ export default function IndexRoute() {
                 {account.twitterUsername ? (
                   `twitter.com/${account.twitterUsername}`
                 ) : (
-                  <span className="text-gray-500">Not available</span>
+                  <span className="text-gray-400">Not available</span>
                 )}
               </dd>
             </div>
@@ -160,93 +160,82 @@ export default function IndexRoute() {
                 {account.bio?.length ? (
                   account.bio
                 ) : (
-                  <span className="text-gray-500">Not available</span>
+                  <span className="text-gray-400">Not available</span>
                 )}
               </dd>
             </div>
           </dl>
         </div>
       </div>
-      <div className="overflow-hidden rounded-lg bg-white shadow">
+      <div className="overflow-hidden rounded-md border bg-white">
         <div className="border-b bg-white px-4 py-3 sm:px-6">
-          <h2 className="text-sm font-semibold text-gray-900">
+          <h2 className="text-sm font-semibold text-gray-800">
             Top Repositories
           </h2>
         </div>
         {account.repositories.nodes.length ? (
           <ul role="list" className="divide-y">
-            {account.repositories.nodes.map((item) => (
-              <li key={item.name}>
+            {account.repositories.nodes.map((repo) => (
+              <li key={repo.name}>
                 <ExternalLink
-                  href={item.url}
+                  href={repo.url}
                   className="block space-y-2 p-4 hover:bg-gray-50 sm:px-6"
                 >
                   <div className="flex items-center justify-between gap-2">
                     <p className="turncate text-sm font-medium text-primary-600">
-                      {item.name}
+                      {repo.name}
                     </p>
-                    {item.primaryLanguage && (
+                    {repo.primaryLanguage && (
                       <span className="inline-flex items-center gap-1.5 rounded-full border bg-white px-2.5 py-0.5 text-xs font-medium text-gray-500">
                         <svg
                           viewBox="0 0 8 8"
                           fill="currentColor"
-                          style={{ color: item.primaryLanguage.color }}
+                          style={{ color: repo.primaryLanguage.color }}
                           className="-ml-0.5 h-2 w-2"
                         >
                           <circle cx={4} cy={4} r={3} />
                         </svg>
-                        {item.primaryLanguage.name}
+                        {repo.primaryLanguage.name}
                       </span>
                     )}
                   </div>
-                  <div className="space-y-2">
-                    {item.repositoryTopics.nodes.length !== 0 && (
-                      <div className="flex flex-wrap gap-0.5">
-                        {item.repositoryTopics.nodes.map((topicItem) => (
-                          <span
-                            key={topicItem.topic.name}
-                            className="inline-flex items-center rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800"
-                          >
-                            {topicItem.topic.name}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                    {item.description && (
-                      <p className="text-sm text-gray-900">
-                        {item.description}
-                      </p>
-                    )}
-                    <div className="space-y-2 sm:flex sm:gap-6 sm:space-y-0">
-                      <div className="flex items-center gap-1.5">
-                        <StarIcon className="h-5 w-5 flex-shrink-0 text-gray-400" />
-                        <p className="text-sm leading-6 text-gray-500">
-                          {formatDecimalNumber(item.stargazerCount)}{" "}
-                          {item.stargazerCount === 1 ? "star" : "stars"}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <ScaleIcon className="h-5 w-5 flex-shrink-0 text-gray-400" />
-                        <p className="text-sm leading-6 text-gray-500">
-                          {item.licenseInfo?.name ?? "Not available"}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <ShareIcon className="h-5 w-5 flex-shrink-0 text-gray-400" />
-                        <p className="text-sm leading-6 text-gray-500">
-                          {item.forkCount}{" "}
-                          {item.forkCount === 1 ? "fork" : "forks"}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <CalendarIcon className="h-5 w-5 flex-shrink-0 text-gray-400" />
-                        <p className="text-sm leading-6 text-gray-500">
-                          Updated on{" "}
-                          <time dateTime={item.updatedAt}>
-                            {formatDateString(item.updatedAt)}
-                          </time>
-                        </p>
-                      </div>
+                  {repo.repositoryTopics.nodes.length !== 0 && (
+                    <div className="flex flex-wrap gap-0.5">
+                      {repo.repositoryTopics.nodes.map((topicItem) => (
+                        <span
+                          key={topicItem.topic.name}
+                          className="inline-flex items-center rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800"
+                        >
+                          {topicItem.topic.name}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  {repo.description && (
+                    <p className="text-sm text-gray-900">{repo.description}</p>
+                  )}
+                  <div className="space-y-2 sm:flex sm:flex-row sm:flex-wrap sm:gap-6 sm:space-y-0">
+                    <div className="flex items-center gap-1.5 text-sm text-gray-500">
+                      <StarIcon className="h-5 w-5 shrink-0 text-gray-400" />
+                      {formatDecimalNumber(repo.stargazerCount)}{" "}
+                      {repo.stargazerCount === 1 ? "star" : "stars"}
+                    </div>
+                    <div className="flex items-center gap-1.5 text-sm text-gray-500">
+                      <ScaleIcon className="h-5 w-5 shrink-0 text-gray-400" />
+                      {repo.licenseInfo?.name ?? (
+                        <span className="text-gray-400">No license</span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1.5 text-sm text-gray-500">
+                      <ShareIcon className="h-5 w-5 shrink-0 text-gray-400" />
+                      {repo.forkCount} {repo.forkCount === 1 ? "fork" : "forks"}
+                    </div>
+                    <div className="flex items-center gap-1.5 text-sm text-gray-500">
+                      <CalendarIcon className="h-5 w-5 shrink-0 text-gray-400" />
+                      Updated on{" "}
+                      <time dateTime={repo.updatedAt}>
+                        {formatDateString(repo.updatedAt)}
+                      </time>
                     </div>
                   </div>
                 </ExternalLink>
