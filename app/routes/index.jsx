@@ -9,16 +9,17 @@ import { useCatch, useLoaderData, useSearchParams } from "@remix-run/react";
 import { ExternalLink } from "~/components/external-link";
 import { StackedLayout } from "~/components/layout";
 import { getUserAccount } from "~/lib/github";
-import { formatDateString, formatDecimalNumber } from "~/utils/format";
+import { formatDate, formatNumber } from "~/utils/format";
 import { Alert } from "../components/alert";
 
 export async function loader({ request }) {
   const searchParams = new URL(request.url).searchParams;
+
   const login = searchParams.get("q");
   if (!login) {
-    const newSearchParams = new URLSearchParams([["q", "kentcdodds"]]);
+    searchParams.set("q", "kentcdodds");
 
-    return redirect(`/?${newSearchParams}`);
+    return redirect(`/?${searchParams}`);
   }
 
   const account = await getUserAccount(login.trim());
@@ -29,8 +30,8 @@ export async function loader({ request }) {
   return json(account);
 }
 
-export function meta({ data }) {
-  return { title: data?.name || data?.login || "Not Found" };
+export function meta({ data: account }) {
+  return { title: account?.name || account?.login || "Not Found" };
 }
 
 export default function IndexRoute() {
@@ -87,9 +88,7 @@ export default function IndexRoute() {
               key={stat.label}
               className="p-4 text-center text-sm font-medium"
             >
-              <span className="text-gray-900">
-                {formatDecimalNumber(stat.value)}
-              </span>{" "}
+              <span className="text-gray-900">{formatNumber(stat.value)}</span>{" "}
               <span className="text-gray-600">{stat.label}</span>
             </div>
           ))}
@@ -150,7 +149,7 @@ export default function IndexRoute() {
               <dd className="mt-1 text-sm text-gray-900">
                 Joined{" "}
                 <time dateTime={account.createdAt}>
-                  {formatDateString(account.createdAt)}
+                  {formatDate(account.createdAt)}
                 </time>
               </dd>
             </div>
@@ -217,7 +216,7 @@ export default function IndexRoute() {
                   <div className="space-y-2 sm:flex sm:flex-row sm:flex-wrap sm:gap-6 sm:space-y-0">
                     <div className="flex items-center gap-1.5 text-sm text-gray-500">
                       <StarIcon className="h-5 w-5 shrink-0 text-gray-400" />
-                      {formatDecimalNumber(repo.stargazerCount)}{" "}
+                      {formatNumber(repo.stargazerCount)}{" "}
                       {repo.stargazerCount === 1 ? "star" : "stars"}
                     </div>
                     <div className="flex items-center gap-1.5 text-sm text-gray-500">
@@ -234,7 +233,7 @@ export default function IndexRoute() {
                       <CalendarIcon className="h-5 w-5 shrink-0 text-gray-400" />
                       Updated on{" "}
                       <time dateTime={repo.updatedAt}>
-                        {formatDateString(repo.updatedAt)}
+                        {formatDate(repo.updatedAt)}
                       </time>
                     </div>
                   </div>
@@ -243,8 +242,8 @@ export default function IndexRoute() {
             ))}
           </ul>
         ) : (
-          <div className="py-4">
-            <p className="text-center text-sm text-gray-500">No repositories</p>
+          <div className="py-12 text-center">
+            <p className="text-sm text-gray-500">No repositories found</p>
           </div>
         )}
       </div>
