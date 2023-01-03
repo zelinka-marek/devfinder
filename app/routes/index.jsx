@@ -6,7 +6,6 @@ import {
 } from "@heroicons/react/20/solid";
 import { json, redirect } from "@remix-run/node";
 import { useCatch, useLoaderData, useSearchParams } from "@remix-run/react";
-import { ExternalLink } from "~/components/external-link";
 import { StackedLayout } from "~/components/layout";
 import { getUserAccount } from "~/lib/github";
 import { formatDate, formatNumber } from "~/utils/format";
@@ -34,6 +33,16 @@ export function meta({ data: account }) {
   return { title: account?.name || account?.login || "Not Found" };
 }
 
+function ExternalLink(props) {
+  const { href, className, children } = props;
+
+  return (
+    <a href={href} target="_blank" rel="noreferrer" className={className}>
+      {children}
+    </a>
+  );
+}
+
 export default function IndexRoute() {
   const account = useLoaderData();
 
@@ -54,7 +63,7 @@ export default function IndexRoute() {
 
   return (
     <StackedLayout>
-      <div className="overflow-hidden rounded-md border bg-white">
+      <div className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
         <div className="bg-white px-4 py-5 sm:p-6">
           <div className="sm:flex sm:items-center sm:justify-between">
             <div className="sm:flex sm:items-center sm:gap-4">
@@ -75,7 +84,7 @@ export default function IndexRoute() {
             <div className="mt-5 flex justify-center sm:mt-0">
               <ExternalLink
                 href={account.url}
-                className="flex items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                className="flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
               >
                 View profile
               </ExternalLink>
@@ -94,7 +103,7 @@ export default function IndexRoute() {
           ))}
         </div>
       </div>
-      <div className="overflow-hidden rounded-md border bg-white">
+      <div className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
         <div className="border-b bg-white px-4 py-3 sm:px-6">
           <h2 className="text-sm font-semibold text-gray-800">Profile</h2>
         </div>
@@ -166,7 +175,7 @@ export default function IndexRoute() {
           </dl>
         </div>
       </div>
-      <div className="overflow-hidden rounded-md border bg-white">
+      <div className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
         <div className="border-b bg-white px-4 py-3 sm:px-6">
           <h2 className="text-sm font-semibold text-gray-800">
             Top Repositories
