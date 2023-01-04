@@ -6,10 +6,9 @@ import {
 } from "@heroicons/react/20/solid";
 import { json, redirect } from "@remix-run/node";
 import { useCatch, useLoaderData, useSearchParams } from "@remix-run/react";
-import { StackedLayout } from "~/components/layout";
+import { Alert } from "~/components/alert";
 import { getUserAccount } from "~/lib/github";
 import { formatDate, formatNumber } from "~/utils/format";
-import { Alert } from "../components/alert";
 
 export async function loader({ request }) {
   const searchParams = new URL(request.url).searchParams;
@@ -62,7 +61,7 @@ export default function IndexRoute() {
   ];
 
   return (
-    <StackedLayout>
+    <div className="space-y-4">
       <div className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
         <div className="bg-white px-4 py-5 sm:p-6">
           <div className="sm:flex sm:items-center sm:justify-between">
@@ -105,7 +104,9 @@ export default function IndexRoute() {
       </div>
       <div className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
         <div className="border-b bg-white px-4 py-3 sm:px-6">
-          <h2 className="text-sm font-semibold text-gray-800">Profile</h2>
+          <h2 className="text-lg font-medium leading-6 text-gray-900">
+            Profile
+          </h2>
         </div>
         <div className="p-4 sm:px-6">
           <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -177,7 +178,7 @@ export default function IndexRoute() {
       </div>
       <div className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
         <div className="border-b bg-white px-4 py-3 sm:px-6">
-          <h2 className="text-sm font-semibold text-gray-800">
+          <h2 className="text-lg font-medium leading-6 text-gray-900">
             Top Repositories
           </h2>
         </div>
@@ -209,12 +210,12 @@ export default function IndexRoute() {
                   </div>
                   {repo.repositoryTopics.nodes.length !== 0 && (
                     <div className="flex flex-wrap gap-0.5">
-                      {repo.repositoryTopics.nodes.map((topicItem) => (
+                      {repo.repositoryTopics.nodes.map(({ topic }) => (
                         <span
-                          key={topicItem.topic.name}
-                          className="inline-flex items-center rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800"
+                          key={topic.name}
+                          className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800"
                         >
-                          {topicItem.topic.name}
+                          {topic.name}
                         </span>
                       ))}
                     </div>
@@ -256,7 +257,7 @@ export default function IndexRoute() {
           </div>
         )}
       </div>
-    </StackedLayout>
+    </div>
   );
 }
 
@@ -268,12 +269,10 @@ export function CatchBoundary() {
 
   if (caught.status === 404) {
     return (
-      <StackedLayout>
-        <Alert>
-          We're sorry, we couldn't find a user by the username of{" "}
-          <strong>"{login}"</strong>.
-        </Alert>
-      </StackedLayout>
+      <Alert>
+        We're sorry, we couldn't find a user by the username of{" "}
+        <strong>"{login}"</strong>.
+      </Alert>
     );
   }
 
@@ -285,11 +284,9 @@ export function ErrorBoundary() {
   const login = searchParams.get("q");
 
   return (
-    <StackedLayout>
-      <Alert>
-        We're sorry, but an unexpected error occurred while loading a user by
-        the username of <strong>"{login}"</strong>.
-      </Alert>
-    </StackedLayout>
+    <Alert>
+      We're sorry, but an unexpected error occurred while loading a user by the
+      username of <strong>"{login}"</strong>.
+    </Alert>
   );
 }

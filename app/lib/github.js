@@ -72,6 +72,9 @@ export async function getUserAccount(login) {
     body: JSON.stringify({ query: GET_USER_QUERY, variables: { login } }),
   });
   const data = await response.json();
+  if (data.errors && data.errors[0].type !== "NOT_FOUND") {
+    throw new Error(data.errors[0].message);
+  }
 
   return data.data.user;
 }

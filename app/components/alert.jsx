@@ -8,7 +8,9 @@ export function Alert(props) {
       <div className="px-4 py-5 sm:p-6">
         <div className="text-center">
           <XCircleIcon className="inline-block h-8 w-8 text-red-300" />
-          <p className="mt-3 text-sm leading-6 text-gray-600">{children}</p>
+          <p className="mx-auto mt-3 max-w-prose text-sm leading-6 text-gray-600">
+            {children}
+          </p>
         </div>
       </div>
     </div>
