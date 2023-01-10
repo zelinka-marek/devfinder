@@ -1,14 +1,14 @@
 import { ArrowPathIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import { Form, useSearchParams, useTransition } from "@remix-run/react";
+import { Form, useSearchParams, useNavigation } from "@remix-run/react";
 
 export function SearchForm() {
   const [searchParams] = useSearchParams();
   const login = searchParams.get("q");
 
-  const transition = useTransition();
+  const navigation = useNavigation();
   const isSearching =
-    transition.location &&
-    new URLSearchParams(transition.location.search).has("q");
+    navigation.location &&
+    new URLSearchParams(navigation.location.search).has("q");
 
   return (
     <Form role="search">
