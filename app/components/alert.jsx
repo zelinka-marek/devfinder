@@ -1,18 +1,17 @@
-import { XCircleIcon } from "@heroicons/react/24/outline";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 export function Alert(props) {
-  const { children } = props;
+  const { title, description } = props;
 
   return (
-    <div className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
-      <div className="px-4 py-5 sm:p-6">
-        <div className="text-center">
-          <XCircleIcon className="inline-block h-8 w-8 text-red-300" />
-          <p className="mx-auto mt-3 max-w-prose text-sm leading-6 text-gray-600">
-            {children}
-          </p>
-        </div>
+    <div className="text-center">
+      <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-red-100">
+        <ExclamationTriangleIcon className="h-6 w-6 text-red-600" />
       </div>
+      <h3 className="mt-2 text-sm font-medium text-gray-900">{title}</h3>
+      <p className="mx-auto mt-1 max-w-md text-sm text-gray-500">
+        {description}
+      </p>
     </div>
   );
 }

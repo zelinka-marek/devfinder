@@ -5,7 +5,7 @@ import {
   StarIcon,
 } from "@heroicons/react/20/solid";
 import { json, redirect } from "@remix-run/node";
-import { useCatch, useLoaderData, useSearchParams } from "@remix-run/react";
+import { useCatch, useLoaderData } from "@remix-run/react";
 import { Alert } from "~/components/alert";
 import { getUserAccount } from "~/lib/github";
 import { formatDate, formatNumber } from "~/utils/format";
@@ -62,8 +62,8 @@ export default function IndexRoute() {
 
   return (
     <div className="space-y-4">
-      <div className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
-        <div className="bg-white px-4 py-5 sm:p-6">
+      <div className="overflow-hidden rounded-lg bg-white shadow">
+        <div className="px-4 py-5 sm:p-6">
           <div className="sm:flex sm:items-center sm:justify-between">
             <div className="sm:flex sm:items-center sm:gap-4">
               <img
@@ -102,11 +102,9 @@ export default function IndexRoute() {
           ))}
         </div>
       </div>
-      <div className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
-        <div className="border-b bg-white px-4 py-3 sm:px-6">
-          <h2 className="text-lg font-medium leading-6 text-gray-900">
-            Profile
-          </h2>
+      <div className="overflow-hidden rounded-lg bg-white shadow">
+        <div className="border-b px-4 py-3 sm:px-6">
+          <h2 className="text-lg font-medium text-gray-900">Profile</h2>
         </div>
         <div className="p-4 sm:px-6">
           <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -176,9 +174,9 @@ export default function IndexRoute() {
           </dl>
         </div>
       </div>
-      <div className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
-        <div className="border-b bg-white px-4 py-3 sm:px-6">
-          <h2 className="text-lg font-medium leading-6 text-gray-900">
+      <div className="overflow-hidden rounded-lg bg-white shadow">
+        <div className="border-b px-4 py-3 sm:px-6">
+          <h2 className="text-lg font-medium text-gray-900">
             Top Repositories
           </h2>
         </div>
@@ -209,7 +207,7 @@ export default function IndexRoute() {
                     )}
                   </div>
                   {repo.repositoryTopics.nodes.length !== 0 && (
-                    <div className="flex flex-wrap gap-0.5">
+                    <div className="flex flex-wrap gap-x-0.5 gap-y-1">
                       {repo.repositoryTopics.nodes.map(({ topic }) => (
                         <span
                           key={topic.name}
@@ -264,29 +262,30 @@ export default function IndexRoute() {
 export function CatchBoundary() {
   const caught = useCatch();
 
-  const [searchParams] = useSearchParams();
-  const login = searchParams.get("q");
-
-  if (caught.status === 404) {
-    return (
-      <Alert>
-        We're sorry, we couldn't find a user by the username of{" "}
-        <strong>"{login}"</strong>.
-      </Alert>
-    );
+  switch (caught.status) {
+    case 404: {
+      return (
+        <Alert
+          title="No user found"
+          description="We can't find the user you're looking for. Please check your URL. Does the user have a GitHub account?"
+        />
+      );
+    }
+    default: {
+      throw new Error(
+        `Unexpected caught response with status: ${caught.status}`
+      );
+    }
   }
-
-  throw new Error(`Unhandled error: ${caught.status}`);
 }
 
-export function ErrorBoundary() {
-  const [searchParams] = useSearchParams();
-  const login = searchParams.get("q");
+export function ErrorBoundary({ error }) {
+  console.error(error);
 
   return (
-    <Alert>
-      We're sorry, but an unexpected error occurred while loading a user by the
-      username of <strong>"{login}"</strong>.
-    </Alert>
+    <Alert
+      title="An unexpected error occurred"
+      description={`We are having trouble processing this request. Reason: ${error.message}. Try again later.`}
+    />
   );
 }
